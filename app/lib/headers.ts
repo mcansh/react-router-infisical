@@ -1,6 +1,7 @@
 // taken from epic-stack https://github.com/epicweb-dev/epic-stack/blob/798aa07ee9b978d07d0c233026e71413009a969f/app/utils/headers.server.ts
 
-import { type CacheControlValue, format, parse } from "@tusbar/cache-control";
+import type { CacheControlInit } from "@mjackson/headers";
+import { CacheControl } from "@mjackson/headers";
 import { type HeadersArgs } from "react-router";
 
 /**
@@ -83,40 +84,41 @@ export function pipeHeaders({
 export function getConservativeCacheControl(
   ...cacheControlHeaders: Array<string | null>
 ): string {
-  return format(
-    cacheControlHeaders
-      .filter(Boolean)
-      .map((header) => parse(header ?? ""))
-      .reduce<CacheControlValue>((acc, current) => {
-        for (const key in current) {
-          const directive = key as keyof Required<CacheControlValue>; // keyof CacheControl includes functions
+  let cacheControl = cacheControlHeaders
+    .filter(Boolean)
+    .map((header) => new CacheControl(header ?? ""))
+    .reduce<CacheControlInit>((acc, current) => {
+      for (const key in current) {
+        const directive = key as keyof Required<CacheControlInit>;
 
-          const currentValue = current[directive];
+        const currentValue = current[directive];
 
-          switch (typeof currentValue) {
-            case "boolean": {
-              if (currentValue) {
-                acc[directive] = true as any;
-              }
-
-              break;
+        switch (typeof currentValue) {
+          case "boolean": {
+            if (currentValue) {
+              acc[directive] = true as any;
             }
-            case "number": {
-              const accValue = acc[directive] as number | undefined;
 
-              if (accValue === undefined) {
-                acc[directive] = currentValue as any;
-              } else {
-                const result = Math.min(accValue, currentValue);
-                acc[directive] = result as any;
-              }
+            break;
+          }
 
-              break;
+          case "number": {
+            const accValue = acc[directive] as number | undefined;
+
+            if (accValue === undefined) {
+              acc[directive] = currentValue as any;
+            } else {
+              const result = Math.min(accValue, currentValue);
+              acc[directive] = result as any;
             }
+
+            break;
           }
         }
+      }
 
-        return acc;
-      }, {}),
-  );
+      return acc;
+    }, {});
+
+  return new CacheControl(cacheControl).toString();
 }
