@@ -1,15 +1,14 @@
 import { data } from "react-router";
 import { getCloudinaryUrl } from "~/lib/cloudinary";
 import { getSecrets } from "~/lib/env";
-import { combineServerTimings, makeTimings, time } from "~/lib/timing";
+import { pipeHeaders } from "~/lib/headers";
+import { makeTimings, time } from "~/lib/timing";
 import { Welcome } from "../welcome/welcome";
 import type { Route } from "./+types/home";
 
 export async function loader({ request }: Route.LoaderArgs) {
   let url = new URL(request.url);
-
   let forceFresh = url.searchParams.has("fresh");
-
   let timings = makeTimings("home");
 
   let secrets = await time(() => getSecrets({ forceFresh }), {
@@ -33,17 +32,18 @@ export async function loader({ request }: Route.LoaderArgs) {
 
   return data(
     { mugshot, mugshotSrcSet: mugshotSrcSet.join(",") },
-    { headers: { "Server-Timing": timings.toString() } },
+    {
+      headers: {
+        "Cache-Control": "public, max-age=60",
+        "Server-Timing": timings.toString(),
+        Link: `<${mugshot}>; rel=preload; as=image; imagesizes="(min-width: 800px) 400px, 100vw"`,
+      },
+    },
   );
 }
 
-export function headers({
-  loaderHeaders,
-  parentHeaders,
-}: Route.HeadersArgs): Headers | Record<string, string> {
-  return {
-    "Server-Timing": combineServerTimings(parentHeaders, loaderHeaders), // <-- 4. Send headers
-  };
+export function headers(headers: Route.HeadersArgs): Headers | HeadersInit {
+  return pipeHeaders({ ...headers, extraForwardHeaders: ["Link"] });
 }
 
 export function meta({}: Route.MetaArgs) {
