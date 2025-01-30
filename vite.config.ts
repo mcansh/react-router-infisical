@@ -2,17 +2,10 @@ import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { reactRouterDevTools } from "react-router-devtools";
 import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig(({ command, isSsrBuild }) => {
   return {
-    plugins: [
-      reactRouterDevTools(),
-      tailwindcss(),
-      reactRouter(),
-      tsconfigPaths(),
-    ],
-
+    plugins: [reactRouterDevTools(), tailwindcss(), reactRouter()],
     build: {
       cssMinify: true,
       ssr: false,

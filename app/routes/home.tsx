@@ -1,8 +1,8 @@
+import { getCloudinaryUrl } from "#app/lib.server/cloudinary.js";
+import { getSecrets } from "#app/lib.server/env.js";
+import { pipeHeaders } from "#app/lib.server/headers.js";
+import { makeTimings, time } from "#app/lib.server/timing.js";
 import { data } from "react-router";
-import { getCloudinaryUrl } from "~/lib/cloudinary";
-import { getSecrets } from "~/lib/env";
-import { pipeHeaders } from "~/lib/headers";
-import { makeTimings, time } from "~/lib/timing";
 import { Welcome } from "../welcome/welcome";
 import type { Route } from "./+types/home";
 
