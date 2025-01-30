@@ -10,6 +10,7 @@ export async function getCloudinaryUrl(
   transformations?: TransformerOption | TransformerVideoOption,
 ) {
   let secrets = await getSecrets();
+
   return buildUrl(publicId, {
     cloud: { cloudName: secrets.CLOUDINARY_CLOUD_NAME },
     transformations: {

@@ -1,10 +1,22 @@
+import { data } from "react-router";
 import { getCloudinaryUrl } from "~/lib/cloudinary";
 import { getSecrets } from "~/lib/env";
+import { combineServerTimings, makeTimings, time } from "~/lib/timing";
 import { Welcome } from "../welcome/welcome";
 import type { Route } from "./+types/home";
 
-export async function loader({}: Route.LoaderArgs) {
-  let secrets = await getSecrets();
+export async function loader({ request }: Route.LoaderArgs) {
+  let url = new URL(request.url);
+
+  let forceFresh = url.searchParams.has("fresh");
+
+  let timings = makeTimings("home");
+
+  let secrets = await time(() => getSecrets({ forceFresh }), {
+    type: "secrets",
+    timings,
+  });
+
   let mugshot = await getCloudinaryUrl(secrets.MUGSHOT, {
     resize: { width: 200, height: 200, type: "fill" },
   });
@@ -19,7 +31,19 @@ export async function loader({}: Route.LoaderArgs) {
     }),
   );
 
-  return { mugshot, mugshotSrcSet: mugshotSrcSet.join(", ") };
+  return data(
+    { mugshot, mugshotSrcSet: mugshotSrcSet.join(",") },
+    { headers: { "Server-Timing": timings.toString() } },
+  );
+}
+
+export function headers({
+  loaderHeaders,
+  parentHeaders,
+}: Route.HeadersArgs): Headers | Record<string, string> {
+  return {
+    "Server-Timing": combineServerTimings(parentHeaders, loaderHeaders), // <-- 4. Send headers
+  };
 }
 
 export function meta({}: Route.MetaArgs) {
@@ -32,14 +56,14 @@ export function meta({}: Route.MetaArgs) {
 export default function Home({ loaderData }: Route.ComponentProps) {
   return (
     <div>
-      {/* <img
+      <img
         src={loaderData.mugshot}
         alt="Mugshot"
         srcSet={loaderData.mugshotSrcSet}
         sizes="(min-width: 800px) 400px, 100vw"
         height={200}
         width={200}
-      /> */}
+      />
       <Welcome />
     </div>
   );

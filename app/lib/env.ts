@@ -1,12 +1,9 @@
-import {
-  cachified,
-  totalTtl,
-  type Cache,
-  type CacheEntry,
-} from "@epic-web/cachified";
+import type { Cache, CacheEntry } from "@epic-web/cachified";
+import { totalTtl } from "@epic-web/cachified";
 import { InfisicalSDK } from "@infisical/sdk";
 import { LRUCache } from "lru-cache";
 import { z } from "zod";
+import { cachified } from "./cachified";
 
 let appEnvSchema = z.object({
   INFISICAL_CLIENT_ID: z.string().min(1),
@@ -29,7 +26,8 @@ let initialized = await client.auth().universalAuth.login({
   clientSecret: appEnv.INFISICAL_CLIENT_SECRET,
 });
 
-async function getSecrets() {
+async function getFreshSecrets() {
+  console.log(`getting secrets from Infisical`);
   let result = await client.secrets().listSecrets({
     projectId: appEnv.INFISICAL_PROJECT_ID,
     environment: appEnv.INFISICAL_ENVIRONMENT,
@@ -63,20 +61,18 @@ const lru: Cache = {
   },
 };
 
-function getCachedSecrets() {
+export function getSecrets({ forceFresh }: { forceFresh?: boolean } = {}) {
   return cachified({
     key: "secrets",
     cache: lru,
     async getFreshValue() {
-      console.log(`getting secrets from Infisical`);
-      return getSecrets();
+      return getFreshSecrets();
     },
+    forceFresh,
     /**
-     * 5 minutes until cache gets invalid
+     * 1 hour until cache gets invalid
      * Optional, defaults to Infinity
      */
-    ttl: 300_000,
+    ttl: 60 * 60 * 1000,
   });
 }
-
-export { getCachedSecrets as getSecrets };
