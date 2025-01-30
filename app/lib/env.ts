@@ -19,14 +19,19 @@ let envSchema = z.object({
   CLOUDINARY_CLOUD_NAME: z.string().min(1),
 });
 
-let client = new InfisicalSDK();
+async function createInfisicalClient() {
+  let client = new InfisicalSDK();
 
-let initialized = await client.auth().universalAuth.login({
-  clientId: appEnv.INFISICAL_CLIENT_ID,
-  clientSecret: appEnv.INFISICAL_CLIENT_SECRET,
-});
+  await client.auth().universalAuth.login({
+    clientId: appEnv.INFISICAL_CLIENT_ID,
+    clientSecret: appEnv.INFISICAL_CLIENT_SECRET,
+  });
+
+  return client;
+}
 
 async function getFreshSecrets() {
+  let client = await createInfisicalClient();
   console.log(`getting secrets from Infisical`);
   let result = await client.secrets().listSecrets({
     projectId: appEnv.INFISICAL_PROJECT_ID,

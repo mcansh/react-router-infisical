@@ -4,15 +4,22 @@ import { reactRouterDevTools } from "react-router-devtools";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
-export default defineConfig({
-  plugins: [
-    reactRouterDevTools(),
-    tailwindcss(),
-    reactRouter(),
-    tsconfigPaths(),
-  ],
-  build: {
-    cssMinify: true,
-    ssr: false,
-  },
+export default defineConfig(({ command, isSsrBuild }) => {
+  return {
+    plugins: [
+      reactRouterDevTools(),
+      tailwindcss(),
+      reactRouter(),
+      tsconfigPaths(),
+    ],
+
+    build: {
+      cssMinify: true,
+      ssr: false,
+      rollupOptions: isSsrBuild ? { input: "./server/app.ts" } : undefined,
+    },
+    ssr: {
+      noExternal: command === "build" ? true : undefined,
+    },
+  };
 });
