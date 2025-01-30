@@ -9,23 +9,33 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
+    "@epic-web/cachified": "^5.2.0",
+    "@infisical/sdk": "^3.0.5",
+    "@mcansh/http-helmet": "^0.13.0",
     "@react-router/node": "^7.1.3",
     "@react-router/serve": "^7.1.3",
-    "isbot": "^5.1.17",
+    "cloudinary-build-url": "^0.2.4",
+    "isbot": "^5.1.22",
+    "lru-cache": "^11.0.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router": "^7.1.3"
+    "react-router": "^7.1.3",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@cld-apis/types": "^0.1.6",
     "@react-router/dev": "^7.1.3",
-    "@tailwindcss/vite": "^4.0.0",
-    "@types/node": "^20",
-    "@types/react": "^19.0.1",
-    "@types/react-dom": "^19.0.1",
+    "@tailwindcss/vite": "^4.0.1",
+    "@types/node": "^22.12.0",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "prettier": "^3.4.2",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "prettier-plugin-tailwindcss": "^0.6.11",
     "react-router-devtools": "^1.1.0",
-    "tailwindcss": "^4.0.0",
-    "typescript": "^5.7.2",
-    "vite": "^5.4.11",
+    "tailwindcss": "^4.0.1",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.11",
     "vite-tsconfig-paths": "^5.1.4"
   },
   "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0"
