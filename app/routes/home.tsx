@@ -3,7 +3,6 @@ import { getSecrets } from "#app/lib.server/env.js";
 import { pipeHeaders } from "#app/lib.server/headers.js";
 import { makeTimings, time } from "#app/lib.server/timing.js";
 import { data } from "react-router";
-import { Welcome } from "../welcome/welcome";
 import type { Route } from "./+types/home";
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -31,7 +30,11 @@ export async function loader({ request }: Route.LoaderArgs) {
   );
 
   return data(
-    { mugshot, mugshotSrcSet: mugshotSrcSet.join(",") },
+    {
+      mugshot,
+      mugshotSrcSet: mugshotSrcSet.join(","),
+      headline: secrets.HEADLINE,
+    },
     {
       headers: {
         "Cache-Control": "public, max-age=60",
@@ -55,7 +58,9 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Home({ loaderData }: Route.ComponentProps) {
   return (
-    <div>
+    <div className="flex flex-col items-center space-y-4 text-center">
+      <h1 className="text-4xl">{loaderData.headline}</h1>
+
       <img
         src={loaderData.mugshot}
         alt="Mugshot"
@@ -63,8 +68,13 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         sizes="(min-width: 800px) 400px, 100vw"
         height={200}
         width={200}
+        className="rounded"
       />
-      <Welcome />
+
+      <p>
+        The above image and headline are loaded from secrets stored in
+        Infisical.
+      </p>
     </div>
   );
 }

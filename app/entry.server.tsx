@@ -41,7 +41,7 @@ export default function handleRequest(
         "img-src": ["'self'", "https://res.cloudinary.com"],
         "style-src": ["'self'", "https://fonts.googleapis.com"],
         "script-src": ["'self'", `'nonce-${nonce}'`],
-        "connect-src": ["'self'"],
+        "connect-src": ["'self'", ...(import.meta.env.DEV ? ["ws:"] : [])],
       },
     });
 

@@ -1,16 +1,16 @@
+import clsx from "clsx";
 import { NavLink, Outlet } from "react-router";
 
 export default function Layout() {
   return (
     <div>
-      <h1>Layout</h1>
       <nav>
-        <ul className="flex space-x-4">
+        <ul className="flex justify-center space-x-4">
           <li>
             <NavLink
               to="/"
               className={({ isActive }) => {
-                return isActive ? "text-blue-400 underline" : "";
+                return clsx("font-bold", isActive ? "text-pink-400" : "");
               }}
             >
               Home
@@ -20,7 +20,7 @@ export default function Layout() {
             <NavLink
               to="/page-2"
               className={({ isActive }) => {
-                return isActive ? "text-blue-400 underline" : "";
+                return clsx("font-bold", isActive ? "text-pink-400" : "");
               }}
             >
               Page 2
@@ -29,7 +29,9 @@ export default function Layout() {
         </ul>
       </nav>
 
-      <Outlet />
+      <div className="pt-4">
+        <Outlet />
+      </div>
     </div>
   );
 }

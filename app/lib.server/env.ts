@@ -17,6 +17,7 @@ let appEnv = appEnvSchema.parse(process.env);
 let envSchema = z.object({
   MUGSHOT: z.string().min(1),
   CLOUDINARY_CLOUD_NAME: z.string().min(1),
+  HEADLINE: z.string().min(1),
 });
 
 async function createInfisicalClient() {
