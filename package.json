@@ -14,7 +14,7 @@
     "@epic-web/cachified": "^5.2.0",
     "@infisical/sdk": "^3.0.5",
     "@mcansh/http-helmet": "^0.13.0",
-    "@mcansh/react-router-vercel-vite-plugin": "^0.1.0",
+    "@mcansh/react-router-vercel-vite-plugin": "^0.2.0",
     "@mjackson/headers": "^0.10.0",
     "@react-router/node": "^7.1.4",
     "@react-router/serve": "^7.1.4",

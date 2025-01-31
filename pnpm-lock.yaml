@@ -18,8 +18,8 @@ importers:
         specifier: ^0.13.0
         version: 0.13.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@mcansh/react-router-vercel-vite-plugin':
-        specifier: ^0.1.0
-        version: 0.1.0
+        specifier: ^0.2.0
+        version: 0.2.0
       '@mjackson/headers':
         specifier: ^0.10.0
         version: 0.10.0
@@ -536,8 +536,8 @@ packages:
       react-dom:
         optional: true
 
-  '@mcansh/react-router-vercel-vite-plugin@0.1.0':
-    resolution: {integrity: sha512-HV5aCwhPJA2MtNukpS4/MxKqJrTqb+gOiX2FlGzzOBFqoVm7dXVMew8qn/eb20WRZCHICC30vPzbVaQJCJW9Ig==}
+  '@mcansh/react-router-vercel-vite-plugin@0.2.0':
+    resolution: {integrity: sha512-W3zUEpJPx3eh5iOmgnvXXE3CwENNQOCNfBnT60c7LTfGZ430PqhQLMnCFohjHn5+ay4ahafHx4m+sNCN9CCFDg==}
 
   '@mjackson/headers@0.10.0':
     resolution: {integrity: sha512-U1Eu1gF979k7ZoIBsJyD+T5l9MjtPONsZfoXfktsQHPJD0s7SokBGx+tLKDLsOY+gzVYAWS0yRFDNY8cgbQzWQ==}
@@ -3904,7 +3904,7 @@ snapshots:
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
 
-  '@mcansh/react-router-vercel-vite-plugin@0.1.0': {}
+  '@mcansh/react-router-vercel-vite-plugin@0.2.0': {}
 
   '@mjackson/headers@0.10.0': {}
 
